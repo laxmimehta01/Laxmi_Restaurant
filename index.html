@@ -66,59 +66,82 @@
     </div>
   </section>
 
-
-  <!-- menus -->
+  <!-- Menus -->
+<!-- Menus -->
 <section id="menus" class="menus">
   <h2>Our Menus</h2>
+  <div class="menu-cards">
 
-  <div class="menu-row">
     <!-- Pure Veg -->
-    <div class="menu-box">
+    <div class="menu-card" data-target="pureveg">
       <h3>🥗 Laxmi Restaurant (Pure Veg)</h3>
-      <div class="slider">
-        <div class="slides">
-          <img src="pureveg1.png" alt="Pure Veg Menu 1">
-          <img src="pureveg2.png" alt="Pure Veg Menu 2">
-          <img src="pureveg3.png" alt="Pure Veg Menu 3">
-          <img src="pureveg4.png" alt="Pure Veg Menu 4">
-          <img src="pureveg5.png" alt="Pure Veg Menu 5">
-        </div>
-        <button class="prev">❮</button>
-        <button class="next">❯</button>
-        <div class="dots"></div>
-      </div>
+      <p>Authentic vegetarian delicacies cooked with tradition.</p>
     </div>
 
     <!-- Veg + Non-Veg -->
-    <div class="menu-box">
+    <div class="menu-card" data-target="vegnonveg">
       <h3>🍗 Laxmi Restaurant (Veg + Non-Veg)</h3>
-      <div class="slider">
-        <div class="slides">
-          <!-- <img src="vegnonveg1.png" alt="Veg + Non Veg Menu 1">
-          <img src="vegnonveg2.png" alt="Veg + Non Veg Menu 2"> -->
-        </div>
-        <button class="prev">❮</button>
-        <button class="next">❯</button>
-        <div class="dots"></div>
-      </div>
+      <p>A blend of vegetarian & non-vegetarian delights.</p>
     </div>
 
     <!-- Fast Food -->
-    <div class="menu-box">
+    <div class="menu-card" data-target="fastfood">
       <h3>🍔 Laxmi Fast Food</h3>
-      <div class="slider">
-        <div class="slides">
-          <img src="images/fastfood1.png" alt="Fast Food Menu 1">
-          <img src="images/fastfood2.png" alt="Fast Food Menu 2">
-        </div>
-        <button class="prev">❮</button>
-        <button class="next">❯</button>
-        <div class="dots"></div>
-      </div>
+      <p>Quick bites, fast service, irresistible flavors.</p>
     </div>
+
   </div>
 </section>
 
+<!-- Popup Modals -->
+<div id="pureveg" class="menu-modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>🥗 Laxmi Restaurant (Pure Veg)</h3>
+    <div class="slider">
+      <div class="slides">
+        <img src="pureveg1.png" alt="Pure Veg Menu 1">
+        <img src="pureveg2.png" alt="Pure Veg Menu 2">
+        <img src="pureveg3.png" alt="Pure Veg Menu 3">
+      </div>
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+      <div class="dots"></div>
+    </div>
+  </div>
+</div>
+
+<div id="vegnonveg" class="menu-modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>🍗 Laxmi Restaurant (Veg + Non-Veg)</h3>
+    <div class="slider">
+      <div class="slides">
+        <img src="vegnonveg1.png" alt="Veg + Non Veg Menu 1">
+        <img src="vegnonveg2.png" alt="Veg + Non Veg Menu 2">
+      </div>
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+      <div class="dots"></div>
+    </div>
+  </div>
+</div>
+
+<div id="fastfood" class="menu-modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>🍔 Laxmi Fast Food</h3>
+    <div class="slider">
+      <div class="slides">
+        <img src="images/fastfood1.png" alt="Fast Food Menu 1">
+        <img src="images/fastfood2.png" alt="Fast Food Menu 2">
+      </div>
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
+      <div class="dots"></div>
+    </div>
+  </div>
+</div>
 
 
   <!-- How to Reach -->
@@ -152,29 +175,55 @@
   </footer>
 
   <!-- JS -->
-  <script>
-  // Sticky Header
-  window.addEventListener("scroll", function() {
-    const header = document.querySelector("header");
-    if (window.scrollY > 50) {
-      header.classList.add("scrolled");
-    } else {
-      header.classList.remove("scrolled");
-    }
+ <script>
+// Sticky Header
+window.addEventListener("scroll", function() {
+  const header = document.querySelector("header");
+  if (window.scrollY > 50) {
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
+
+// Hero Slider
+let currentSlide = 0;
+const slides = document.querySelectorAll(".hero-slide");
+setInterval(() => {
+  slides[currentSlide].classList.remove("active");
+  currentSlide = (currentSlide + 1) % slides.length;
+  slides[currentSlide].classList.add("active");
+}, 3000);
+
+// ✅ Popup Menus + Slider Init
+document.querySelectorAll(".menu-card").forEach(card => {
+  card.addEventListener("click", () => {
+    const target = document.getElementById(card.dataset.target);
+    target.classList.add("active");
+
+    // initialize slider inside this modal
+    initSlider(target.querySelector(".slider"));
   });
+});
 
-  // Hero Slider
-  let currentSlide = 0;
-  const slides = document.querySelectorAll(".hero-slide");
-  setInterval(() => {
-    slides[currentSlide].classList.remove("active");
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add("active");
-  }, 3000); // change every 4 sec
+// Close buttons
+document.querySelectorAll(".menu-modal .close").forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.closest(".menu-modal").classList.remove("active");
+  });
+});
 
+// Close on outside click
+document.querySelectorAll(".menu-modal").forEach(modal => {
+  modal.addEventListener("click", e => {
+    if (e.target === modal) modal.classList.remove("active");
+  });
+});
 
-// menus
-document.querySelectorAll(".slider").forEach(slider => {
+// ✅ Slider function (runs per modal when opened)
+function initSlider(slider) {
+  if (!slider) return;
+
   const slides = slider.querySelector(".slides");
   const images = slider.querySelectorAll("img");
   const prev = slider.querySelector(".prev");
@@ -182,6 +231,9 @@ document.querySelectorAll(".slider").forEach(slider => {
   const dotsContainer = slider.querySelector(".dots");
 
   let index = 0;
+
+  // clear old dots (in case reopened)
+  dotsContainer.innerHTML = "";
 
   // Create dots
   images.forEach((_, i) => {
@@ -201,9 +253,12 @@ document.querySelectorAll(".slider").forEach(slider => {
 
   prev.addEventListener("click", () => showSlide(index - 1));
   next.addEventListener("click", () => showSlide(index + 1));
-});
 
-  </script>
+  // show first slide
+  showSlide(0);
+}
+</script>
+
 
 </body>
 </html>
